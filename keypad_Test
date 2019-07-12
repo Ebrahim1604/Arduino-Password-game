@@ -28,7 +28,7 @@ Following is the pin-out of connection of Keypad from left to right i.e. R1 to C
 byte rowPins[ROWS] = {A0, A1, A2, A3}; 
 byte colPins[COLS] = {A4, A5, 3}; 
 
-//We Define an object customKeypad of class Keypad using above defined parameters
+//creates a variable of type Keypad using above defined parameters
 Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS); 
 
 void setup(){
