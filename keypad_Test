@@ -1,0 +1,47 @@
+//we need to add the Keypad.h header file which should be in the same working directory as this file
+#include <Keypad.h>
+
+//Defining the number of rows and the number of cols of the Matrix keypad(4x3)
+const byte ROWS = 4; 
+const byte COLS = 3; 
+
+//We describe the corresponding character values present at that position of the keypad 
+//Note: In the simulation image, although we use 4x4 keypad, it is implemented as 4x3 by not connecting the 4th coloumn to arduino
+char hexaKeys[ROWS][COLS] = {
+  {'1', '2', '3'},
+  {'4', '5', '6'},
+  {'7', '8', '9'},
+  {'*', '0', '#'}
+};
+
+/*
+Following is the pin-out of connection of Keypad from left to right i.e. R1 to C3
+ Matrix-pin        Arduino-pin
+   R1                 A0
+   R2                 A1
+   R3                 A2
+   R4                 A3
+   C1                 A4
+   C2                 A5
+   C3                  3
+*/
+byte rowPins[ROWS] = {A0, A1, A2, A3}; 
+byte colPins[COLS] = {A4, A5, 3}; 
+
+//We Define an object customKeypad of class Keypad using above defined parameters
+Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS); 
+
+void setup(){
+  Serial.begin(9600);
+}
+  
+void loop(){
+//We check if any key from the keypad is pressed and store that character in customKey variable
+  char customKey = customKeypad.getKey();
+  
+  //so if a key is pressed, it would return True boolean value and enter the if loop
+  if (customKey){
+  //we then print that pressed key's character value in serial monitor
+    Serial.println(customKey);
+  }
+}
