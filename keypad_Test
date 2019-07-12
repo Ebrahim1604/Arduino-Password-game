@@ -1,4 +1,4 @@
-//we need to add the Keypad.h header file which should be in the same working directory as this file
+//we need to add the Keypad.h header file which should be in the same working directory as this file. Refer ReadME of the repo for that.
 #include <Keypad.h>
 
 //Defining the number of rows and the number of cols of the Matrix keypad(4x3)
