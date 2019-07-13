@@ -1,1 +1,247 @@
+#include <LiquidCrystal.h>
+#include <Keypad.h>
+
+/*
+Pin-out of 16x2 LCD and connection with arduino (Left to right)
+LCDpinno     Description       	        Arduino
+   1			    VSS				                  GND
+   2			    VDD				                  5v(Short with pin 15 of LCD)
+   3			    VO				                  No connection with arduino, but with output(middle pin) of 10k potentiometer
+   4			    RS				                  9
+   5			    R/W				                  GND	
+   6			    EN				                  8
+ 7,8,9,10		  1st 4-bit data lines      No connection as we use the LCD in 4-bit data mode only
+   11			    data_pin 4			            7
+   12			    data_pin 5			            6
+   13			    data_pin 6			            5
+   14			    data_pin 7			            4
+   15			    VCC					              Connect to a 220 ohm resistor and the resistor to Arduino 5v pin
+   16			    GND					                GND
+   
+*/
+   		
+//defining variable liquid_crystal_display of type LiquidCrystal with connection to pins as follows (RS,EN,data_pin4,data_pin5,data_pin6,data_pin7) 
+LiquidCrystal liquid_crystal_display(9,8,7,6,5,4);
+
+//stores password
+char password[4];
+
+//default password is 1234
+char initial_password[4] = {'1','2','3','4'};
+
+//temporary password use to store the keypad values and which will be compared to initial_password value
+char new_password[4];
+
+//used as counter
+int i=0;
+
+//Defining Keypad parameters same as done in keypad_test
+char key_pressed=0;
+const byte rows = 4; 
+const byte columns = 3; 
+char hexaKeys[rows][columns] = {
+{'1','2','3'},
+{'4','5','6'},
+{'7','8','9'},
+{'*','0','#'}
+};
+byte row_pins[rows] = {A0,A1,A2,A3};
+byte column_pins[columns] = {A4,A5,3};   
+Keypad keypad_key = Keypad( makeKeymap(hexaKeys), row_pins, column_pins, rows, columns);
+
+void setup()
+
+{
+  Serial.begin(9600);
+  
+  //initializing the 16x2 lcd
+  liquid_crystal_display.begin(16,2);
+  
+  // We print the welocme message. It is to remember that there are only 16 characters in one line available, so calculate
+  // the printed text accordingly and if need to write more, go to next line using set cursor command.
+  liquid_crystal_display.print("Welcome to the ");
+  liquid_crystal_display.setCursor(0,1);
+  liquid_crystal_display.print("password game!");
+  delay(1500);
+  
+  //These are instruction messages which are printed on LCD many times throughout the game. You will see ahead. The instruction
+  //will be explained in detail in description. Please read it before going ahead.
+  instructions();
+}
+
+void loop()
+
+{
+//Now we check if any key is presses or not and store that value in key_pressed varibale, same as done in keypad_test.
+key_pressed = keypad_key.getKey();
+
+//if key_pressed is not empty, this if becomes true which means a particular key is pressed.
+ if(key_pressed)
+  {
+   
+   //If pressed key is '#', this loop becomes true
+     if(key_pressed == '#')
+      { 
+        //Serial.println(key_pressed);
+        
+        //This message indicated the password change procedure has began
+        liquid_crystal_display.print("Initiatin change");
+        delay(1000);
+        
+        //This function carries out the password change operation.
+        change();
+      }
+      
+      else
+      {
+	        //this message indicated we are now playing the game and entering the stage1 password
+          liquid_crystal_display.setCursor(0,0);
+          liquid_crystal_display.print("stage1 password:");
+          liquid_crystal_display.setCursor(i,1);
+          
+          //storing each presses key in the password character array
+          password[i++]= key_pressed;
+          //Serial.println(key_pressed);
+          //displaying each pressed key
+          liquid_crystal_display.print(key_pressed);
+
+//if value of i becomse 4 which means 4 digit password is entered, we enter this loop
+          if(i==4)
+            {
+              delay(200);
+              
+// Now we use the strncmp function to comapre elements of both the arrays, if both arrays are equal, it returns 
+// 0 which is why we used the '!' negate operator.
+              if(!(strncmp(password, initial_password,4)))
+                {
+                   liquid_crystal_display.clear();
+                   liquid_crystal_display.print("Pass Accepted!");
+                   delay(500);
+                   instructions();
+                   i=0;
+                }
+     //If the password is wrong, this loop is excecuted           
+                else
+                 {
+                 
+                   liquid_crystal_display.clear();
+                   liquid_crystal_display.print("Wrong Password");
+                   liquid_crystal_display.setCursor(0,1);
+                   liquid_crystal_display.print("Please try again");
+                   delay(1500);
+                   i=0;
+                   instructions();
+                 }
+            }
+        }
+   }
+}
+
+//defining how password is changed
+void change()
+ {
+
+   int j=0;
+   liquid_crystal_display.clear();  
+   liquid_crystal_display.print("Enter password:");
+   liquid_crystal_display.setCursor(j,1);
+   
+   while(j<4)
+
+     {
+//again taking input from keypad
+        char key=keypad_key.getKey();
+        
+        if(key)
+        
+          {
+
+             new_password[j++]=key;
+             liquid_crystal_display.print(key);
+          }
+         
+       key=0;
+
+      }
+
+    delay(500);
+    
+    if((strncmp(new_password, initial_password, 4)))
+      {
+         liquid_crystal_display.clear();
+         liquid_crystal_display.print("Wrong Pass");
+         liquid_crystal_display.setCursor(0,1);
+         liquid_crystal_display.print("Try Again");
+         delay(500);
+         instructions();
+         ;
+      }
+
+   else
+
+     {
+     
+        j=0;
+        liquid_crystal_display.clear();
+        liquid_crystal_display.print("Update new Pass:");
+        liquid_crystal_display.setCursor(0,1);
+
+        while(j<4)
+      
+         {
+
+            char key=keypad_key.getKey();
+
+            if(key)
+            
+              {
+
+                 initial_password[j]=key;
+                 liquid_crystal_display.print(key);
+                 j++;
+        
+               }
+          
+             key = 0;
+
+          }
+         
+         liquid_crystal_display.clear();
+         liquid_crystal_display.print("Pass Changed to:");
+         for(int k=0; k<4; k++)
+         {
+           liquid_crystal_display.setCursor(k,1);
+           liquid_crystal_display.print(initial_password[k]);
+           Serial.println(initial_password[k]); 
+         }
+         
+         delay(1000);
+         instructions();
+      }  
+   }
+
+void instructions()
+{
+  
+  liquid_crystal_display.clear();
+  liquid_crystal_display.print("Press '#' to ");
+  liquid_crystal_display.setCursor(0,1);
+  liquid_crystal_display.print("change password");
+  delay(1500);
+  liquid_crystal_display.clear();
+  liquid_crystal_display.print("or enter stage1");
+  liquid_crystal_display.setCursor(0,1);
+  liquid_crystal_display.print("password");
+  delay(1500);
+  liquid_crystal_display.clear();
+}
+  
+
+
+
+
+
+
+
+
 
