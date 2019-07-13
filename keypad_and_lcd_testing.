@@ -1,3 +1,20 @@
+/*
+Once The arduino is powered ON, A welcome message appears on the Lcd screen followed by an instruction message saying 
+a] Press '#' to change password.
+b] Press '*' to enter stage 1 password (and actually start playing the game).
+
+So the default initial password is '1234'. When you press # after instruction message disappears, another message appears on the 
+screen saying 'Initian change' which means you are now in password change mode. Then you will be asked to enter the initial
+password i.e. 1234. If its correct, you will be asked to enter a new password to replace the old one. Once done, the default system
+password changes to this new password. But remember, this same password now has to be used while playing game also.
+
+Now if you dont want to change password, directly start typing the password and you will see 'stage1 password' appear on the LCD
+screen. If this password is right, an acceptance message will appear. If not right, a try again message appears. 
+
+This is just to get the gist of how the game would be.
+*/
+
+
 #include <LiquidCrystal.h>
 #include <Keypad.h>
 
@@ -64,8 +81,8 @@ void setup()
   liquid_crystal_display.print("password game!");
   delay(1500);
   
-  //These are instruction messages which are printed on LCD many times throughout the game. You will see ahead. The instruction
-  //will be explained in detail in description. Please read it before going ahead.
+  //These are instruction messages which are printed on LCD many times throughout the game, You will see ahead. The instruction
+  //are explained in detail in start of the code. Please read it before going ahead.
   instructions();
 }
 
