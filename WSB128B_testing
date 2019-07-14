@@ -25,7 +25,7 @@ LCDpinno     Description       	        Arduino
 LiquidCrystal liquid_crystal_display(9,8,7,6,5,4);
 
 //stores password
-char password[4];
+char password[4] = {'0','0','0','0'};
 
 int i=0;
 //int k=0;
@@ -87,12 +87,14 @@ void loop()
     
           
     //storing each presses key in the password character array
-     Serial.print("i: ");
-     Serial.println(i);
+     Serial.print("i:");
+     Serial.print(i);
      password[i]= key_pressed;
      i = i + 1;
-     Serial.print(key_pressed);
-     Serial.println(" ");
+     Serial.print(" password[i]:");
+     Serial.print(password[i]);
+     Serial.print(" Keypressed:");
+     Serial.println(key_pressed);
      //displaying each pressed key
      liquid_crystal_display.setCursor(i,1);
      liquid_crystal_display.print(key_pressed);
