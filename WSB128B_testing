@@ -25,7 +25,7 @@ LCDpinno     Description       	        Arduino
 LiquidCrystal liquid_crystal_display(9,8,7,6,5,4);
 
 //stores password
-char password[4] = {'0','0','0','0'};
+char password[4];
 
 int i=0;
 //int k=0;
@@ -80,24 +80,19 @@ void loop()
 
 //if key_pressed is not empty, this if becomes true which means a particular key is pressed.
  if(key_pressed)
-  {
-    //liquid_crystal_display.clear();
-    liquid_crystal_display.setCursor(0,0);
-    liquid_crystal_display.print("Enter below:");
-    
+  {   
+   
+   //this message indicated we are now playing the game and entering the stage1 password
+          liquid_crystal_display.setCursor(0,0);
+          liquid_crystal_display.print("Enter below:");
+          liquid_crystal_display.setCursor(i,1);
           
-    //storing each presses key in the password character array
-     Serial.print("i:");
-     Serial.print(i);
-     password[i]= key_pressed;
-     i = i + 1;
-     Serial.print(" password[i]:");
-     Serial.print(password[i]);
-     Serial.print(" Keypressed:");
-     Serial.println(key_pressed);
-     //displaying each pressed key
-     liquid_crystal_display.setCursor(i,1);
-     liquid_crystal_display.print(key_pressed);
+          //storing each presses key in the password character array
+          password[i++]= key_pressed;
+          //Serial.println(key_pressed);
+          //displaying each pressed key
+          liquid_crystal_display.print(key_pressed);
+
 
 //if value of i becomse 4 which means 4 digit password is entered, we enter this loop
           if(i==4)
@@ -105,9 +100,9 @@ void loop()
               delay(200);
               glow(password);
               display();
-              
+              i=0;
             }
-           i=0;  
+             
        }
 }
   
