@@ -7,20 +7,20 @@
  Lcd and keypad connections remain the same. Just do the additional connections for WS2812B
  
 Pin-out of 16x2 LCD and connection with arduino (Left to right)
-LCDpinno       Description       	 Arduino
-   1            VSS		              GND
-   2	          VDD			           5v(Short with pin 15 of LCD)
-   3	          VO			           No connection with arduino, but with output(middle pin) of 10k potentiometer
-   4	          RS			           9
-   5	          R/W			           GND	
-   6	          EN			           8
+LCDpinno       Description           	 Arduino
+   1            VSS		                  GND
+   2	          VDD			                  5v(Short with pin 15 of LCD)
+   3	          VO			                 No connection with arduino, but with output(middle pin) of 10k potentiometer
+   4	          RS			                   9
+   5	          R/W			                  GND	
+   6	          EN			                   8
  7,8,9,10   1st 4-bit data lines      No connection as we use the LCD in 4-bit data mode only
-   11		     data_pin 4		        7
-   12		     data_pin 5		        6
-   13	        data_pin 6		        5
-   14	        data_pin 7		        4
-   15		     VCC			              Connect to a 220 ohm resistor and the resistor to Arduino 5v pin
-   16		     GND			              GND
+   11		     data_pin 4		              7
+   12		     data_pin 5		              6
+   13	        data_pin 6		            5
+   14	        data_pin 7		            4
+   15		     VCC			                    Connect to a 220 ohm resistor and the resistor to Arduino 5v pin
+   16		     GND			                     GND
    
 Neopixel(WSB128B)            Arduino
    GND                  Connect this terminal to negative of 5v power supply, and again this same terminal to Arduino Gnd pin.
@@ -114,7 +114,7 @@ void loop()
                 Serial.print(password[j]);
                 Serial.println(" ");
               }
-           //we pass the typed password stored in password area which will take care of Leds
+           //we pass the typed password stored in password aray which will take care of Leds
               glow(password);
               display();
               i=0;
