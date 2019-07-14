@@ -1,0 +1,63 @@
+//Please include this library.
+#include <Servo.h>
+
+//Creating an object of class Servo1 i.e. stage2 servo.
+Servo servo1;
+
+//For testing and calibaration, use one servo at a time only. This servo2 (stage3) is provided only for reference.
+//Servo servo2;
+
+/*
+ Servo1_pins       Arduino
+   VCC               5v
+   GND               GND
+   INPUT           digital pin 10
+   
+ Servo2_pins       Arduino
+   VCC               5v
+   GND               GND
+   INPUT           digital pin 11
+  */
+  
+//These are the values for initial postion,final position and time to wait before retracing the path for servo1. You need to
+// set these values according to the mechanism's constraints. Test the code with different values to decide the values which
+//work for you.
+int servo1_initial_pos = 10;
+int servo1_final_pos = 180;
+int servo1_time = 200;
+
+//int servo2_initial_pos = 10;
+//int servo2_final_pos = 180;
+//int servo2_time = 5000;
+
+void setup() {
+  
+  servo1.attach(10);
+  servo1.write(servo1_initial_pos);
+  
+  //servo2.attach(11);
+  //servo2.write(servo1_initial_pos);
+}
+
+void loop() 
+{ 
+
+ //If you want to test the program only once at a time, you can use this program in void setup() itself. In void loop(), it 
+  //will keep going back and forth.
+
+ // scan from initial position to final position degrees
+  for(int angle = servo1_initial_pos; angle<servo1_final_pos; angle++)  
+  {                                  
+    servo1.write(angle);               
+    delay(10);                   
+  } 
+  
+  delay(servo1_time);
+  
+  // now scan back from final position to initial position degrees
+  for(int angle = servo1_final_pos; angle>servo1_initial_pos; angle--)    
+  {                                
+    servo1.write(angle);           
+    delay(10);       
+  } 
+}
