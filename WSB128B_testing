@@ -1,0 +1,203 @@
+#include <Adafruit_NeoPixel.h>
+#include <LiquidCrystal.h>
+#include <Keypad.h>
+
+/*
+Pin-out of 16x2 LCD and connection with arduino (Left to right)
+LCDpinno     Description       	        Arduino
+   1			    VSS				                  GND
+   2			    VDD				                  5v(Short with pin 15 of LCD)
+   3			    VO				                  No connection with arduino, but with output(middle pin) of 10k potentiometer
+   4			    RS				                  9
+   5			    R/W				                  GND	
+   6			    EN				                  8
+ 7,8,9,10		  1st 4-bit data lines      No connection as we use the LCD in 4-bit data mode only
+   11			    data_pin 4			            7
+   12			    data_pin 5			            6
+   13			    data_pin 6			            5
+   14			    data_pin 7			            4
+   15			    VCC					              Connect to a 220 ohm resistor and the resistor to Arduino 5v pin
+   16			    GND					                GND
+   
+*/
+   		
+//defining variable liquid_crystal_display of type LiquidCrystal with connection to pins as follows (RS,EN,data_pin4,data_pin5,data_pin6,data_pin7) 
+LiquidCrystal liquid_crystal_display(9,8,7,6,5,4);
+
+//stores password
+char password[4];
+
+int i=0;
+//int k=0;
+
+//Defining Keypad parameters same as done in keypad_test
+char key_pressed=0;
+
+const byte rows = 4; 
+const byte columns = 3; 
+char hexaKeys[rows][columns] = {
+{'1','2','3'},
+{'4','5','6'},
+{'7','8','9'},
+{'*','0','#'}
+};
+byte row_pins[rows] = {A0,A1,A2,A3};
+byte column_pins[columns] = {A4,A5,3};   
+Keypad keypad_key = Keypad( makeKeymap(hexaKeys), row_pins, column_pins, rows, columns);
+
+#define LED_PIN 2
+
+#define LED_COUNT 16
+
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+void setup()
+
+{
+  Serial.begin(9600);
+  
+  //initializing the 16x2 lcd
+  liquid_crystal_display.begin(16,2);
+  
+  strip.begin();
+  strip.show();
+  
+  // We print the welocme message. It is to remember that there are only 16 characters in one line available, so calculate
+  // the printed text accordingly and if need to write more, go to next line using set cursor command.
+  liquid_crystal_display.print("WS2812B testing");
+  delay(200);
+  
+  display();
+  
+}
+
+void loop()
+
+{
+  
+   key_pressed = keypad_key.getKey();
+
+
+//if key_pressed is not empty, this if becomes true which means a particular key is pressed.
+ if(key_pressed)
+  {
+    //liquid_crystal_display.clear();
+    liquid_crystal_display.setCursor(0,0);
+    liquid_crystal_display.print("Enter below:");
+    
+          
+    //storing each presses key in the password character array
+     Serial.print("i: ");
+     Serial.println(i);
+     password[i]= key_pressed;
+     i = i + 1;
+     Serial.print(key_pressed);
+     Serial.println(" ");
+     //displaying each pressed key
+     liquid_crystal_display.setCursor(i,1);
+     liquid_crystal_display.print(key_pressed);
+
+//if value of i becomse 4 which means 4 digit password is entered, we enter this loop
+          if(i==4)
+            {
+              delay(200);
+              glow(password);
+              display();
+              
+            }
+           i=0;  
+       }
+}
+  
+
+
+void display()
+{
+  
+  liquid_crystal_display.clear();
+  liquid_crystal_display.print("Please enter a 4");
+  liquid_crystal_display.setCursor(0,1);
+  liquid_crystal_display.print("digit password");
+  delay(300);
+  liquid_crystal_display.clear();
+}
+  
+void glow(char password[])
+{
+   liquid_crystal_display.clear();
+   liquid_crystal_display.print("Observe the LEDs");
+   delay(500);
+   liquid_crystal_display.clear();
+  
+   for(int j=0; j<password[0]; j++)
+  {
+  liquid_crystal_display.setCursor(0,0);
+  Serial.print("RED: ");
+  Serial.println(password[0]);
+  liquid_crystal_display.print("RED");
+  strip.setPixelColor(j, 255, 0, 0);
+  strip.show();
+  delay(40);
+  
+  }
+  delay(2000);
+  strip.clear();
+  liquid_crystal_display.clear();
+  
+  for(int j=0; j<password[1]; j++)
+  {
+  liquid_crystal_display.setCursor(0,0);
+  Serial.print("GREEN: ");
+  Serial.println(password[1]);
+  liquid_crystal_display.print("GREEN");
+  strip.setPixelColor(j, 0, 255, 0);
+  strip.show();
+  delay(40);
+  
+  }
+  delay(2000);
+  strip.clear();
+  liquid_crystal_display.clear();
+  
+  for(int j=0; j<password[2]; j++)
+  {
+  liquid_crystal_display.setCursor(0,0);
+  Serial.print("BLUE: ");
+  Serial.println(password[2]);
+  liquid_crystal_display.print("BLUE");
+  strip.setPixelColor(j, 0, 0, 255);
+  strip.show();
+  delay(40);
+  
+  }
+  delay(2000);
+  strip.clear();
+  liquid_crystal_display.clear();
+  
+  for(int j=0; j<password[2]; j++)
+  {
+  liquid_crystal_display.setCursor(0,0);
+  Serial.print("WHITE: ");
+  Serial.println(password[3]);
+  liquid_crystal_display.print("WHITE");
+  strip.setPixelColor(j, 255, 255, 255);
+  strip.show();
+  delay(40);
+  
+  }
+  delay(2000);
+  strip.clear();
+  liquid_crystal_display.clear();
+
+
+
+}
+
+
+
+
+
+
+
+
+
