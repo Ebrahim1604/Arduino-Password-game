@@ -122,7 +122,7 @@ Servo servo2;
 
 int servo1_initial_pos = 10;
 int servo1_final_pos = 180;
-//int servo1_time = 200;
+int servo1_time = 200;
 
 int servo2_initial_pos = 10;
 int servo2_final_pos = 180;
@@ -151,6 +151,7 @@ void setup()
   servo2.write(servo2_initial_pos);
   
   pinMode(uv_led,OUTPUT);
+  digitalWrite(uv_led,HIGH);
   
   // We print the welocme message. It is to remember that there are only 16 characters in one line available, so calculate
   // the printed text accordingly and if need to write more, go to next line using set cursor command and then use print statement again.
@@ -260,17 +261,17 @@ key_pressed = keypad_key.getKey();
                    liquid_crystal_display.print("Its stage2!");
                    delay(200);
                    liquid_crystal_display.clear();
-                   for(int angle = servo1_initial_pos; angle<servo1_final_pos; angle++)  
-                               {                                  
-                                       servo1.write(angle);               
-                                       delay(10);                   
-                               } 
+                   //for(int angle = servo1_initial_pos; angle<servo1_final_pos; angle++)  
+                      //         {                                  
+                        //               servo1.write(angle);               
+                          //             delay(10);                   
+                           //    } 
                    glow(stage2_password);
-                   for(int angle = servo1_final_pos; angle>servo1_initial_pos; angle--)    
-                               {                                
-                                      servo1.write(angle);           
-                                      delay(10);       
-                               }
+                   //for(int angle = servo1_final_pos; angle>servo1_initial_pos; angle--)    
+                    //           {                                
+                      //                servo1.write(angle);           
+                       //               delay(10);       
+                        //       }
                 
                    liquid_crystal_display.clear();
                    liquid_crystal_display.print("enter stage2");
@@ -305,20 +306,22 @@ key_pressed = keypad_key.getKey();
                                   liquid_crystal_display.print("Its stage3!");
                                   delay(200);
                                   liquid_crystal_display.clear();
-                                  for(int angle = servo2_initial_pos; angle<servo2_final_pos; angle++)  
-                                    {                                  
-                                       servo2.write(angle);               
+                       
+                                  digitalWrite(uv_led,HIGH);
+                                  for(int angle = servo1_initial_pos; angle<servo1_final_pos; angle++)  
+                                   {                                  
+                                       servo1.write(angle);               
                                        delay(10);                   
-                                    }
+                                   }
                        
-                                    digitalWrite(uv_led,HIGH);
-                                    delay(servo2_time);
+                                   delay(servo1_time);
                        
-                                   for(int angle = servo2_final_pos; angle>servo2_initial_pos; angle--)    
-                                     {                                
-                                      servo2.write(angle);           
+                                  for(int angle = servo1_final_pos; angle>servo1_initial_pos; angle--)    
+                                   {                                
+                                      servo1.write(angle);           
                                       delay(10);       
-                                     }
+                                   } 
+                       
                                    liquid_crystal_display.clear();
                                    liquid_crystal_display.print("enter stage3");
                                    liquid_crystal_display.setCursor(0,1);
@@ -355,6 +358,22 @@ key_pressed = keypad_key.getKey();
                                   liquid_crystal_display.setCursor(0,1);
                                   liquid_crystal_display.print("You did it!");
                                   delay(200);
+                                 
+                                      
+                                  for(int angle = servo2_initial_pos; angle<servo2_final_pos; angle++)  
+                                    {                                  
+                                       servo2.write(angle);               
+                                       delay(10);                   
+                                    }
+                                    
+                                    delay(servo2_time);
+                       
+                                   for(int angle = servo2_final_pos; angle>servo2_initial_pos; angle--)    
+                                     {                                
+                                      servo2.write(angle);           
+                                      delay(10);       
+                                     }
+
                                 
                                  }
                                  
