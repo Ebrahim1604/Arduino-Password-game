@@ -829,12 +829,12 @@ void instructions()
 {
   
   liquid_crystal_display.clear();
-  liquid_crystal_display.print("Press '#' to ");
-  liquid_crystal_display.setCursor(0,1);
-  liquid_crystal_display.print("change password");
-  delay(300);
-  liquid_crystal_display.clear();
-  liquid_crystal_display.print("or enter stage1");
+  //liquid_crystal_display.print("Press '#' to ");
+  //liquid_crystal_display.setCursor(0,1);
+  //liquid_crystal_display.print("change password");
+  //delay(300);
+  //liquid_crystal_display.clear();
+  liquid_crystal_display.print("Enter the stage1");
   liquid_crystal_display.setCursor(0,1);
   liquid_crystal_display.print("password");
   delay(300);
