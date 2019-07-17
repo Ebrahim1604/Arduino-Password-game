@@ -376,11 +376,11 @@ key_pressed = keypad_key.getKey();
                                   }
                             else
                              {
-                               liquid_crystal_display.clear();
-                          	   liquid_crystal_display.print("Wrong 3 Password");
-                   			   liquid_crystal_display.setCursor(0,1);
-                   			   liquid_crystal_display.print("Please try again");
-                   			   delay(100);
+                                liquid_crystal_display.clear();
+                          	liquid_crystal_display.print("Wrong 3 Password");
+                   		liquid_crystal_display.setCursor(0,1);
+                   		liquid_crystal_display.print("Please try again");
+                   	        delay(100);
                                l=0;
                                stage3_counter += 1;
                                liquid_crystal_display.clear();
@@ -403,7 +403,7 @@ key_pressed = keypad_key.getKey();
                           if(stage2_counter == 2)
                             { 
                                 liquid_crystal_display.clear();
-                                liquid_crystal_display.print("Thats 2 wrongs!");
+                                liquid_crystal_display.print("Thats 3 wrongs!");
                                 liquid_crystal_display.setCursor(0,1);
                                 liquid_crystal_display.print("Its game over");
                                 delay(300);
@@ -415,7 +415,7 @@ key_pressed = keypad_key.getKey();
                            else
                   			{
                    				liquid_crystal_display.clear();
-                   				liquid_crystal_display.print("Wrong 3 Password");
+                   				liquid_crystal_display.print("Wrong 2 Password");
                    				liquid_crystal_display.setCursor(0,1);
                    				liquid_crystal_display.print("Please try again");
                    				delay(100);
